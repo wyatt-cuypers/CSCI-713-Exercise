@@ -1,5 +1,6 @@
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
 import org.junit.jupiter.api.Test;
-import static org.junit.jupiter.api.Assertions.*;
 
 class StudentServiceTest {
 
@@ -20,6 +21,10 @@ class StudentServiceTest {
     @Test
     void testCalculateAverageGpa() {
         StudentService service = new StudentService();
+
+        double emptyAvg = service.calculateAverageGpa();
+        assertEquals(emptyAvg, 0.0);
+
         service.addStudent(new Student("Alice", 20, 3.5));
         service.addStudent(new Student("Bob", 22, 3.5));
 
@@ -27,8 +32,19 @@ class StudentServiceTest {
         assertEquals(3.5, avg, 0.001);
     }
 
+    @Test
+    void testRemoveStudentByName() {
+        StudentService service = new StudentService();
+        service.addStudent(new Student("Alice", 20, 3.5));
+        service.addStudent(new Student("Bob", 22, 3.5));
+
+        service.removeStudentByName("Bob");
+        int studentsLength = service.getStudentsCount();
+
+        assertEquals(studentsLength, 1);
+    }
+
     // Intentionally leave out tests for:
-    // - removeStudentByName
     // - behavior with empty student list
     // - Utils methods
 }

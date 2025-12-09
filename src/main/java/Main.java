@@ -17,10 +17,13 @@ public class Main {
         // Code smell: Repeated calls, magic numbers
         System.out.println("Average GPA: " + service.calculateAverageGpa());
 
+        service.removeStudentByName("Charlie");
+        System.out.println("Class Size without Charlie: " + service.getStudentsCount());
+
         // Dead code / unused
         int x = 42;
         if (x > 100) {
-            System.out.println("Impossible");  // Never executes
+            System.out.println("Impossible"); // Never executes
         }
     }
 }

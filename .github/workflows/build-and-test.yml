@@ -1,0 +1,39 @@
+name: Maven CI with JaCoCo & PIT
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  build-test-mutation:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout sources
+        uses: actions/checkout@v4
+
+      - name: Set up JDK
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: "17"
+          cache: maven
+
+      - name: Build with Maven and run tests
+        run: mvn -B clean verify
+
+      - name: Run PIT mutation testing
+        run: mvn -B org.pitest:pitest-maven:mutationCoverage
+
+      - name: Upload JaCoCo report
+        uses: actions/upload-artifact@v4
+        with:
+          name: jacoco-report
+          path: target/site/jacoco
+
+      - name: Upload PIT report
+        uses: actions/upload-artifact@v4
+        with:
+          name: pit-report
+          path: target/pit-reports
